@@ -1,6 +1,6 @@
 from django.db import models
-from ..product.models import Product
-from ..user.models import User
+from product.models import Product
+from user.models import User
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
