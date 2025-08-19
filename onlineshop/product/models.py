@@ -1,27 +1,33 @@
 from django.db import models
 
-class Category(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    description = models.TextField()
 
+class Collection(models.Model):
+    title = models.CharField(max_length=100)
+    featured_product = models.ForeignKey(
+        'Product', on_delete=models.SET_NULL,null = True, blank=True, related_name='featured_product'
+    )
     def __str__(self):
-        return self.name
+        return self.title
+
+    class Meta:
+        ordering = ['title']
 
 
 class Product(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(decimal_places=2, max_digits=10)
+    title = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100)
+    description = models.TextField(null=True, blank=True)
+    unit_price = models.DecimalField(decimal_places=2)
+    last_update = models.DateTimeField(auto_now=True)
+    collection = models.ForeignKey(
+        Collection, on_delete=models.PROTECT, related_name='products')
+
+class Review(models.Model):
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name='reviews')
+    name = models.CharField(max_length=255)
     description = models.TextField()
-    quantity = models.IntegerField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
-
-
-
-
+    date = models.DateField(auto_now_add=True)
+    
 
 
