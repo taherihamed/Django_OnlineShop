@@ -2,6 +2,7 @@ from django.db import models
 from product.models import Product
 from user.models import User
 from django.core.validators import MinValueValidator
+from uuid import uuid4
 
 
 class Customer(models.Model):
